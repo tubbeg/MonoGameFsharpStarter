@@ -23,6 +23,13 @@ type MyGame () as this =
         this.Content.RootDirectory <- "Content"
         this.IsMouseVisible <- true
 
+    let drawSpriteFont (sb : SpriteBatch) (t : string) (sf : SpriteFont) (fontPos : Vector2)  =
+        sb.Begin()
+        let fo = t |> sf.MeasureString |> divVector 2.0f
+        sb.DrawString
+            (sf, t, fontPos, Color.Lavender, 0.0f, fo, 1.0f, SpriteEffects.None, 0.5f)
+        sb.End()
+
     override this.Initialize (): unit = 
             base.Initialize()
 
@@ -52,10 +59,7 @@ type MyGame () as this =
             let text = "hello hello hello"
             match _spriteBatch, _spriteFont, _fontPos with
             | Some sb, Some sf, Some fp ->
-                sb.Begin()
-                let fo = sf.MeasureString(text) |> divVector 2.0f
-                sb.DrawString (sf, text, fp, Color.Lavender, 0.0f, fo, 1.0f, SpriteEffects.None, 0.5f)
-                sb.End()
+                drawSpriteFont sb text sf fp
             | _ -> ()
             base.Draw(gameTime: GameTime)
 
